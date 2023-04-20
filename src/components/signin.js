@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -13,6 +14,31 @@ const Signin = () => {
       color:"white"
     }
   })
+
+  const [user , setUser] = useState("");
+  const [pass , Setpass] = useState("");
+  const [userErr , setUserErr] = useState(false);
+
+  const Navigate = useNavigate();
+
+  const loginHandle = (e)=>{
+    e.preventDefault();
+
+    if(userErr == false){
+      console.log("you are clicking on the form to submit")
+      Navigate("/Dashboard")
+    }
+  }
+
+  const handler = (e)=>{
+    if(e.target.value.length < 3){
+      console.log(e.target.value.length);
+      setUserErr(true);
+
+    }else{
+      setUserErr(false);
+    }
+  }
 
   const validator = ()=>{
     const userName = document.getElementById("User");
@@ -60,20 +86,20 @@ useEffect(validator , [])
 
         <div className="form-container w-[75%] bg-white p-4 rounded-md">
             <div className='w-[90%] m-auto ml-6'>
-            <form action="" className='m-auto'>
+            <form action="" className='m-auto' onSubmit={loginHandle}>
                 <div className="my-3">
                     <p>Email Address</p>
-                    <input className='bg-[#F5F5F5] p-2 w-[94%] rounded-lg' id='User' type="email" onChange={validator} />
+                    <input className='bg-[#F5F5F5] p-2 w-[94%] rounded-lg' id='User' type="email" onChange={handler} />{userErr?<small className='text-red-500'>invalid username</small>:""}
                 </div>
                 <div className="my-3">
                     <p>Password</p>
-                    <input className='bg-[#F5F5F5] p-2 w-[94%] rounded-lg' id='pass' type="password" onChange={validator} />
+                    <input className='bg-[#F5F5F5] p-2 w-[94%] rounded-lg' id='pass' type="password" onChange={handler} />{userErr?<small className='text-red-500'>invalid password</small>:""}
                 </div>
                 <div className="my-2">
                     <a className='text-[#346BD4]' href="#">Forgot password?</a>
                 </div>
                 <div className="my-3">
-                    <button className='bg-black text-white w-[94%] rounded-lg p-2 font-bold' id='login' style={loginbtn.style} disabled>Sign in</button>
+                    <button className='bg-black text-white w-[94%] rounded-lg p-2 font-bold' id='login' style={loginbtn.style} disabled type='submit'>Sign in</button>
                 </div>
             </form>
             </div>
